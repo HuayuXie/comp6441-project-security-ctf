@@ -1,0 +1,3 @@
+Welcome to the file viewer.
+This file is safe to read.
+Try to think about where files are stored and how paths work.
