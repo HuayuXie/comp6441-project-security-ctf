@@ -13,6 +13,7 @@ FILES_DIR = BASE_DIR / "files"
 FLAGS = {
     "cookie": "FLAG{client_side_role_is_not_auth}",
     "xss": "FLAG{xss_needs_output_encoding}",
+    "path": "FLAG{path_traversal_hidden_file_found}",
     "sqli": "FLAG{sql_queries_need_parameters}",
 }
 
@@ -28,19 +29,37 @@ def init_db():
     conn.close()
 
 
+def get_completed_challenges():
+    return sorted(set(session.get("completed_challenges", [])))
+
+
+def mark_challenge_completed(challenge_id):
+    completed = set(get_completed_challenges())
+    completed.add(challenge_id)
+    session["completed_challenges"] = sorted(completed)
+
+
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", completed=get_completed_challenges())
 
 
 @app.route("/defence")
 def defence():
-    return render_template("defence.html")
+    return render_template("defence.html", completed=get_completed_challenges())
+
+
+@app.route("/progress/reset")
+def reset_progress():
+    session.pop("completed_challenges", None)
+    return redirect(url_for("index"))
 
 
 @app.route("/challenge/1")
 def challenge1():
     role = request.cookies.get("role", "user")
+    if role == "admin":
+        mark_challenge_completed(1)
     resp = make_response(render_template("challenge1.html", role=role, flag=FLAGS["cookie"] if role == "admin" else None))
     if "role" not in request.cookies:
         resp.set_cookie("role", "user")
@@ -77,6 +96,8 @@ def secure_challenge1():
 def challenge2():
     query = request.args.get("q", "")
     show_flag = "<script>" in query.lower() or "onerror" in query.lower() or "alert" in query.lower()
+    if show_flag:
+        mark_challenge_completed(2)
     return render_template("challenge2.html", query=query, show_flag=show_flag, flag=FLAGS["xss"])
 
 
@@ -99,6 +120,8 @@ def challenge3():
         # Vulnerable on purpose for this challenge.
         path = FILES_DIR / filename
         content = path.read_text(errors="replace")
+        if FLAGS["path"] in content:
+            mark_challenge_completed(3)
     except Exception as exc:
         error = str(exc)
     return render_template("challenge3.html", filename=filename, content=content, error=error)
@@ -130,6 +153,7 @@ def challenge4():
             user = cur.fetchone()
             if user:
                 message = f"Login successful. {FLAGS['sqli']}"
+                mark_challenge_completed(4)
             else:
                 message = "Login failed. Try again."
         except Exception as exc:

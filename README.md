@@ -1,6 +1,8 @@
 # Beginner Web Security CTF Lab
 
-This COMP6441 project contains four small, beginner-friendly web security CTF challenges. Each challenge demonstrates one unsafe design, provides an intended flag path, and links to a secure comparison that explains the defensive approach.
+This COMP6441 project contains four small, beginner-friendly web security CTF challenges. Each challenge demonstrates one unsafe design, provides an intended flag path, and unlocks a secure comparison after completion.
+
+Two beginner participants tested the lab. Their feedback led to progressive two-level hints, clearer Cookie editing and refresh instructions, completion status on the home page, and defence notes that remain locked until the matching challenge is solved.
 
 ## Challenges
 
@@ -43,7 +45,15 @@ Run the automated checks from the project folder:
 python -m unittest discover -s tests -v
 ```
 
-The tests verify the intended exploit for every challenge and confirm that the secure comparison blocks the same technique.
+The tests verify the intended exploit for every challenge, confirm that the secure comparison blocks the same technique, and check the progress and defence-unlock workflow.
+
+## Evaluation-Informed Improvements
+
+- Each challenge now provides a small first hint and an optional more direct second hint.
+- Challenge 1 explains that the edited Cookie must be confirmed before the page is refreshed or revisited.
+- The home page displays `Completed` or `Not completed` for each challenge.
+- Defence sections unlock only after the corresponding challenge is completed.
+- Completion progress can be reset from the home page for another testing session.
 
 ## Project Structure
 
