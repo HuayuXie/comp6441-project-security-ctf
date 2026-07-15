@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Secure File Viewer</h2>
+  <form method="get">
+    <label>Filename: <input name="file" value="{{ filename }}"></label>
+    <button type="submit">View</button>
+  </form>
+  {% if content %}<pre>{{ content }}</pre>{% endif %}
+  {% if error %}<p class="flag">{{ error }}</p>{% endif %}
+  <p class="hint">Only allowlisted files can be opened.</p>
+</div>
+{% endblock %}

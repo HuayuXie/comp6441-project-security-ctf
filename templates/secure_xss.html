@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Secure XSS Output Handling</h2>
+  <form method="get">
+    <label>Search something: <input name="q" value="{{ query }}"></label>
+    <button type="submit">Search</button>
+  </form>
+  {% if query %}
+    <p>Escaped output:</p>
+    <pre>{{ escaped_query }}</pre>
+    <p class="hint">The payload is displayed as text instead of being executed. A restrictive Content Security Policy is also sent as a response header.</p>
+  {% endif %}
+</div>
+{% endblock %}

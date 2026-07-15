@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Secure SQL Login</h2>
+  <form method="post">
+    <p><label>Username: <input name="username"></label></p>
+    <p><label>Password: <input name="password"></label></p>
+    <button type="submit">Login</button>
+  </form>
+  {% if message %}<p class="hint">{{ message }}</p>{% endif %}
+  <pre>cur.execute(
+    "SELECT * FROM users WHERE username = ? AND password = ?",
+    (username, password)
+)</pre>
+</div>
+{% endblock %}

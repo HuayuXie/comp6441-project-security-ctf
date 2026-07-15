@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Challenge 1: Cookie Role Bypass</h2>
+  <p>You are logged in as: <strong>{{ role }}</strong></p>
+  <p>Only admin users can see the flag.</p>
+  {% if flag %}<p class="flag">{{ flag }}</p>{% else %}<p class="hint">Hint: inspect the browser cookies.</p>{% endif %}
+  <p><a href="/challenge/1/reset">Reset cookie</a></p>
+</div>
+{% endblock %}

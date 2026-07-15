@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Challenge 4: Simple SQL Injection</h2>
+  <form method="post">
+    <p><label>Username: <input name="username"></label></p>
+    <p><label>Password: <input name="password"></label></p>
+    <button type="submit">Login</button>
+  </form>
+  {% if message %}<p class="flag">{{ message }}</p>{% endif %}
+  {% if debug_query %}<p>Debug query:</p><pre>{{ debug_query }}</pre>{% endif %}
+  <p class="hint">Hint: the SQL query is built by joining strings.</p>
+</div>
+{% endblock %}

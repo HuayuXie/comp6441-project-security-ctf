@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Challenge 3: File Disclosure / Path Traversal</h2>
+  <p>Use the file viewer to read public files.</p>
+  <p>Example: <a href="/challenge/3?file=welcome.txt">/challenge/3?file=welcome.txt</a></p>
+  <form method="get">
+    <label>Filename: <input name="file" value="{{ filename }}"></label>
+    <button type="submit">View</button>
+  </form>
+  {% if content %}<pre>{{ content }}</pre>{% endif %}
+  {% if error %}<p class="hint">Error: {{ error }}</p>{% endif %}
+  <p class="hint">Hint: the flag is not inside the public files folder.</p>
+</div>
+{% endblock %}

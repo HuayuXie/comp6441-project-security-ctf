@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Challenge 2: Reflected XSS Search Page</h2>
+  <form method="get">
+    <label>Search something: <input name="q" value="{{ query }}"></label>
+    <button type="submit">Search</button>
+  </form>
+  {% if query %}
+    <p>You searched for:</p>
+    <div class="card">{{ query|safe }}</div>
+  {% endif %}
+  {% if show_flag %}<p class="flag">{{ flag }}</p>{% else %}<p class="hint">Hint: what happens if input is treated as HTML?</p>{% endif %}
+</div>
+{% endblock %}

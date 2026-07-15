@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>{{ title }}</h2>
+  <p>{{ message }}</p>
+  <p>Backend result: <strong>{{ username }}</strong> has role <strong>{{ role }}</strong>.</p>
+  <pre>session["username"] = "student"
+SELECT username, is_admin FROM users WHERE username = ?
+
+# The role comes from trusted backend data, not an editable role cookie.</pre>
+</div>
+{% endblock %}
