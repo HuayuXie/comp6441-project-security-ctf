@@ -9,6 +9,11 @@
   </form>
   {% if message %}<p class="flag">{{ message }}</p>{% endif %}
   {% if debug_query %}<p>Debug query:</p><pre>{{ debug_query }}</pre>{% endif %}
-  <p class="hint">Hint: the SQL query is built by joining strings.</p>
+  <p class="hint"><strong>Hint 1:</strong> submit normal values and observe where they appear in the displayed query.</p>
+  <details class="hint">
+    <summary>Show Hint 2</summary>
+    <p>Look for a way to introduce a Boolean condition that is always true, then use an SQL comment to ignore the remaining password check.</p>
+  </details>
+  {% if message and 'FLAG{' in message %}<p><a href="/">Return home to view your updated progress.</a></p>{% endif %}
 </div>
 {% endblock %}

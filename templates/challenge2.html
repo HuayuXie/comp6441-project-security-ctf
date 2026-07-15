@@ -10,6 +10,15 @@
     <p>You searched for:</p>
     <div class="card">{{ query|safe }}</div>
   {% endif %}
-  {% if show_flag %}<p class="flag">{{ flag }}</p>{% else %}<p class="hint">Hint: what happens if input is treated as HTML?</p>{% endif %}
+  {% if show_flag %}
+    <p class="flag">{{ flag }}</p>
+    <p><a href="/">Return home to view your updated progress.</a></p>
+  {% else %}
+    <p class="hint"><strong>Hint 1:</strong> compare how normal text and HTML-looking input are displayed.</p>
+    <details class="hint">
+      <summary>Show Hint 2</summary>
+      <p>Try a small JavaScript payload that uses an HTML <code>script</code> element and calls <code>alert()</code>.</p>
+    </details>
+  {% endif %}
 </div>
 {% endblock %}

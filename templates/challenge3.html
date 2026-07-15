@@ -10,6 +10,11 @@
   </form>
   {% if content %}<pre>{{ content }}</pre>{% endif %}
   {% if error %}<p class="hint">Error: {{ error }}</p>{% endif %}
-  <p class="hint">Hint: the flag is not inside the public files folder.</p>
+  <p class="hint"><strong>Hint 1:</strong> the target file is outside the public files folder.</p>
+  <details class="hint">
+    <summary>Show Hint 2</summary>
+    <p>In a file path, <code>..</code> means the parent directory. Use it to move up before looking inside the <code>secret</code> folder.</p>
+  </details>
+  {% if content and 'FLAG{' in content %}<p><a href="/">Return home to view your updated progress.</a></p>{% endif %}
 </div>
 {% endblock %}

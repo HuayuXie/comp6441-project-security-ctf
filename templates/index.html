@@ -5,12 +5,26 @@
   <p>This local CTF lab contains four beginner web security challenges. Each challenge is intentionally vulnerable and should only be run locally for learning.</p>
   <p>The project also includes defence comparison pages to show how the same ideas can be implemented more safely.</p>
 </div>
-<div class="card"><h3>Challenge 1: Cookie Role Bypass</h3><p><a href="/challenge/1">Open challenge</a></p></div>
-<div class="card"><h3>Challenge 2: Reflected XSS Search Page</h3><p><a href="/challenge/2">Open challenge</a></p></div>
-<div class="card"><h3>Challenge 3: File Disclosure / Path Traversal</h3><p><a href="/challenge/3">Open challenge</a></p></div>
-<div class="card"><h3>Challenge 4: Simple SQL Injection</h3><p><a href="/challenge/4">Open challenge</a></p></div>
+<div class="card">
+  <p class="status {{ 'complete' if 1 in completed else 'pending' }}">{{ 'Completed' if 1 in completed else 'Not completed' }}</p>
+  <h3>Challenge 1: Cookie Role Bypass</h3><p><a href="/challenge/1">Open challenge</a></p>
+</div>
+<div class="card">
+  <p class="status {{ 'complete' if 2 in completed else 'pending' }}">{{ 'Completed' if 2 in completed else 'Not completed' }}</p>
+  <h3>Challenge 2: Reflected XSS Search Page</h3><p><a href="/challenge/2">Open challenge</a></p>
+</div>
+<div class="card">
+  <p class="status {{ 'complete' if 3 in completed else 'pending' }}">{{ 'Completed' if 3 in completed else 'Not completed' }}</p>
+  <h3>Challenge 3: File Disclosure / Path Traversal</h3><p><a href="/challenge/3">Open challenge</a></p>
+</div>
+<div class="card">
+  <p class="status {{ 'complete' if 4 in completed else 'pending' }}">{{ 'Completed' if 4 in completed else 'Not completed' }}</p>
+  <h3>Challenge 4: Simple SQL Injection</h3><p><a href="/challenge/4">Open challenge</a></p>
+</div>
 <div class="card">
   <h3>Defence Comparison</h3>
-  <p><a href="/defence">Open secure design notes</a></p>
+  <p>Defence notes unlock separately after each matching challenge is completed.</p>
+  <p><a href="/defence">Open unlocked secure design notes</a></p>
+  <p><a href="/progress/reset">Reset completion progress</a></p>
 </div>
 {% endblock %}

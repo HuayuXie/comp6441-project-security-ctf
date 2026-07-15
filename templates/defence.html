@@ -2,30 +2,38 @@
 {% block content %}
 <div class="card">
   <h2>Defence Comparison</h2>
-  <p>This page explains how each vulnerable challenge could be fixed. The secure examples are not part of the CTF solution path; they show the defensive design.</p>
+  <p>This page explains how completed challenges could be fixed. Each section unlocks only after the matching flag is found, so it does not reveal an unfinished solution path.</p>
 </div>
+{% if 1 in completed %}
 <div class="card">
   <h3>Challenge 1: Cookie Role Bypass</h3>
   <p><strong>Vulnerable design:</strong> the server trusts <code>role=admin</code> from a client-side cookie.</p>
   <p><strong>Secure design:</strong> keep a signed user identity in the session, retrieve the role from the backend database, and perform authorisation checks on the server.</p>
   <p><a href="/secure/challenge/1">Open secure comparison</a></p>
 </div>
+{% else %}<div class="card locked"><h3>Challenge 1 defence locked</h3><p>Complete Challenge 1 to unlock this comparison.</p></div>{% endif %}
+{% if 2 in completed %}
 <div class="card">
   <h3>Challenge 2: Reflected XSS</h3>
   <p><strong>Vulnerable design:</strong> user input is rendered with <code>|safe</code>, so it can become HTML or JavaScript.</p>
   <p><strong>Secure design:</strong> output encode user input so it appears as text, then use a restrictive Content Security Policy as defence in depth.</p>
   <p><a href="/secure/challenge/2?q=%3Cscript%3Ealert(1)%3C/script%3E">Open secure comparison</a></p>
 </div>
+{% else %}<div class="card locked"><h3>Challenge 2 defence locked</h3><p>Complete Challenge 2 to unlock this comparison.</p></div>{% endif %}
+{% if 3 in completed %}
 <div class="card">
   <h3>Challenge 3: File Disclosure / Path Traversal</h3>
   <p><strong>Vulnerable design:</strong> the filename parameter is joined into a path without validation.</p>
   <p><strong>Secure design:</strong> use an allowlist and only read approved files from the public folder.</p>
   <p><a href="/secure/challenge/3?file=../secret/flag.txt">Open secure comparison</a></p>
 </div>
+{% else %}<div class="card locked"><h3>Challenge 3 defence locked</h3><p>Complete Challenge 3 to unlock this comparison.</p></div>{% endif %}
+{% if 4 in completed %}
 <div class="card">
   <h3>Challenge 4: Simple SQL Injection</h3>
   <p><strong>Vulnerable design:</strong> user input is concatenated into a SQL query string.</p>
   <p><strong>Secure design:</strong> use parameterised queries so input is treated as data.</p>
   <p><a href="/secure/challenge/4">Open secure comparison</a></p>
 </div>
+{% else %}<div class="card locked"><h3>Challenge 4 defence locked</h3><p>Complete Challenge 4 to unlock this comparison.</p></div>{% endif %}
 {% endblock %}

@@ -4,7 +4,16 @@
   <h2>Challenge 1: Cookie Role Bypass</h2>
   <p>You are logged in as: <strong>{{ role }}</strong></p>
   <p>Only admin users can see the flag.</p>
-  {% if flag %}<p class="flag">{{ flag }}</p>{% else %}<p class="hint">Hint: inspect the browser cookies.</p>{% endif %}
+  {% if flag %}
+    <p class="flag">{{ flag }}</p>
+    <p><a href="/">Return home to view your updated progress.</a></p>
+  {% else %}
+    <p class="hint"><strong>Hint 1:</strong> inspect the data stored by the browser for this site.</p>
+    <details class="hint">
+      <summary>Show Hint 2</summary>
+      <p>Open Developer Tools, find the site cookies under Application or Storage, edit <code>role</code> from <code>user</code> to <code>admin</code>, confirm the change, then refresh or revisit this page.</p>
+    </details>
+  {% endif %}
   <p><a href="/challenge/1/reset">Reset cookie</a></p>
 </div>
 {% endblock %}
