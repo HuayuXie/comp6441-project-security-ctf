@@ -79,11 +79,55 @@ class ChallengeTests(unittest.TestCase):
 
         self.client.set_cookie("role", "admin")
         self.client.get("/challenge/1")
-        self.client.get("/progress/reset")
+        self.client.post("/progress/reset")
         home = self.client.get("/")
         self.assertNotIn(b"Challenge 1 defence locked", home.data)
         defence = self.client.get("/defence")
         self.assertIn(b"Challenge 1 defence locked", defence.data)
+
+    def test_all_challenge_pages_have_two_hint_levels(self):
+        for challenge_id in range(1, 5):
+            page = self.client.get(f"/challenge/{challenge_id}")
+            self.assertIn(b"Hint 1", page.data)
+            self.assertIn(b"Show Hint 2", page.data)
+
+    def test_secure_routes_are_locked_on_the_server(self):
+        for challenge_id in range(1, 5):
+            locked = self.client.get(f"/secure/challenge/{challenge_id}")
+            self.assertEqual(locked.status_code, 403)
+            self.assertIn(f"Challenge {challenge_id} Defence Locked".encode(), locked.data)
+
+        self.client.get("/challenge/2", query_string={"q": "<script>alert(1)</script>"})
+        unlocked = self.client.get("/secure/challenge/2")
+        still_locked = self.client.get("/secure/challenge/1")
+        self.assertEqual(unlocked.status_code, 200)
+        self.assertEqual(still_locked.status_code, 403)
+
+    def test_xss_keyword_without_markup_does_not_award_flag(self):
+        result = self.client.get("/challenge/2", query_string={"q": "alert"})
+        self.assertNotIn(b"FLAG{xss_needs_output_encoding}", result.data)
+
+        progress = self.client.get("/")
+        self.assertIn(b"Challenge 2: Reflected XSS Search Page", progress.data)
+        self.assertEqual(progress.data.count(b">Completed<"), 0)
+
+    def test_normal_sql_login_does_not_award_injection_flag(self):
+        result = self.client.post(
+            "/challenge/4",
+            data={"username": "student", "password": "password123"},
+        )
+        self.assertIn(b"Normal login successful.", result.data)
+        self.assertNotIn(b"FLAG{sql_queries_need_parameters}", result.data)
+
+        progress = self.client.get("/")
+        self.assertEqual(progress.data.count(b">Completed<"), 0)
+
+    def test_progress_reset_requires_post(self):
+        get_result = self.client.get("/progress/reset")
+        self.assertEqual(get_result.status_code, 405)
+
+        post_result = self.client.post("/progress/reset")
+        self.assertEqual(post_result.status_code, 302)
 
     def test_all_challenges_complete_and_unlock_defences(self):
         self.client.set_cookie("role", "admin")
