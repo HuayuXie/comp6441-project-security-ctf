@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card locked">
+  <h2>Challenge {{ challenge_id }} Defence Locked</h2>
+  <p>Complete Challenge {{ challenge_id }} before opening its secure comparison.</p>
+  <p><a href="/challenge/{{ challenge_id }}">Return to the challenge</a></p>
+</div>
+{% endblock %}
