@@ -39,6 +39,17 @@ def mark_challenge_completed(challenge_id):
     session["completed_challenges"] = sorted(completed)
 
 
+def locked_defence_response(challenge_id):
+    return render_template("defence_locked.html", challenge_id=challenge_id), 403
+
+
+def contains_xss_payload(value):
+    lowered = value.lower()
+    script_element = "<script" in lowered and "</script>" in lowered
+    event_handler = "<" in lowered and "onerror" in lowered and "=" in lowered
+    return script_element or event_handler
+
+
 @app.route("/")
 def index():
     return render_template("index.html", completed=get_completed_challenges())
@@ -49,7 +60,7 @@ def defence():
     return render_template("defence.html", completed=get_completed_challenges())
 
 
-@app.route("/progress/reset")
+@app.route("/progress/reset", methods=["POST"])
 def reset_progress():
     session.pop("completed_challenges", None)
     return redirect(url_for("index"))
@@ -75,6 +86,9 @@ def reset_challenge1():
 
 @app.route("/secure/challenge/1")
 def secure_challenge1():
+    if 1 not in get_completed_challenges():
+        return locked_defence_response(1)
+
     session.setdefault("username", "student")
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
@@ -95,7 +109,7 @@ def secure_challenge1():
 @app.route("/challenge/2")
 def challenge2():
     query = request.args.get("q", "")
-    show_flag = "<script>" in query.lower() or "onerror" in query.lower() or "alert" in query.lower()
+    show_flag = contains_xss_payload(query)
     if show_flag:
         mark_challenge_completed(2)
     return render_template("challenge2.html", query=query, show_flag=show_flag, flag=FLAGS["xss"])
@@ -103,6 +117,9 @@ def challenge2():
 
 @app.route("/secure/challenge/2")
 def secure_challenge2():
+    if 2 not in get_completed_challenges():
+        return locked_defence_response(2)
+
     query = request.args.get("q", "")
     response = make_response(render_template("secure_xss.html", query=query, escaped_query=escape(query)))
     response.headers["Content-Security-Policy"] = (
@@ -129,6 +146,9 @@ def challenge3():
 
 @app.route("/secure/challenge/3")
 def secure_challenge3():
+    if 3 not in get_completed_challenges():
+        return locked_defence_response(3)
+
     filename = request.args.get("file", "welcome.txt")
     allowed_files = {"welcome.txt"}
     if filename not in allowed_files:
@@ -152,8 +172,12 @@ def challenge4():
             cur.execute(debug_query)
             user = cur.fetchone()
             if user:
-                message = f"Login successful. {FLAGS['sqli']}"
-                mark_challenge_completed(4)
+                normal_login = username == user[1] and password == user[2]
+                if normal_login:
+                    message = "Normal login successful. Bypass the password check to find the flag."
+                else:
+                    message = f"Authentication bypass successful. {FLAGS['sqli']}"
+                    mark_challenge_completed(4)
             else:
                 message = "Login failed. Try again."
         except Exception as exc:
@@ -165,6 +189,9 @@ def challenge4():
 
 @app.route("/secure/challenge/4", methods=["GET", "POST"])
 def secure_challenge4():
+    if 4 not in get_completed_challenges():
+        return locked_defence_response(4)
+
     message = None
     if request.method == "POST":
         username = request.form.get("username", "")

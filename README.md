@@ -13,12 +13,21 @@ Two beginner participants tested the lab. Their feedback led to progressive two-
 | File Disclosure | Joining an untrusted filename into a path | File allowlist and controlled path handling |
 | SQL Injection | Concatenating input into a SQL query | Parameterised queries |
 
-## Run
+## Run on macOS or Linux
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+python app.py
+```
+
+## Run on Windows PowerShell
+
+```powershell
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 python app.py
 ```
 
@@ -45,15 +54,16 @@ Run the automated checks from the project folder:
 python -m unittest discover -s tests -v
 ```
 
-The tests verify the intended exploit for every challenge, confirm that the secure comparison blocks the same technique, and check the progress and defence-unlock workflow.
+The tests verify the intended exploit for every challenge, confirm that the secure comparison blocks the same technique, and check the progress and defence-unlock workflow. They also check that direct secure URLs remain locked, normal text does not complete the XSS challenge, and a normal SQL login does not award the injection flag.
 
 ## Evaluation-Informed Improvements
 
 - Each challenge now provides a small first hint and an optional more direct second hint.
 - Challenge 1 explains that the edited Cookie must be confirmed before the page is refreshed or revisited.
 - The home page displays `Completed` or `Not completed` for each challenge.
-- Defence sections unlock only after the corresponding challenge is completed.
+- Defence sections and their direct URLs unlock only after the corresponding challenge is completed.
 - Completion progress can be reset from the home page for another testing session.
+- Resetting progress uses a POST action so an ordinary link or page preview cannot clear the session.
 
 ## Project Structure
 
@@ -61,6 +71,7 @@ The tests verify the intended exploit for every challenge, confirm that the secu
 - `templates/`: challenge and defence pages
 - `files/` and `secret/`: public and hidden files for the traversal challenge
 - `tests/`: automated exploit and defence checks
+- `docs/`: dated progress evidence and review summaries
 - `WRITEUP_TEMPLATE.md`: repeatable structure for documenting each challenge
 - `SECURITY_NOTICE.md`: safe-use boundaries for the lab
 
