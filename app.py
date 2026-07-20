@@ -123,7 +123,7 @@ def secure_challenge2():
     query = request.args.get("q", "")
     response = make_response(render_template("secure_xss.html", query=query, escaped_query=escape(query)))
     response.headers["Content-Security-Policy"] = (
-        "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'"
+        "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'"
     )
     return response
 

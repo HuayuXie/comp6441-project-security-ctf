@@ -68,10 +68,12 @@ The tests verify the intended exploit for every challenge, confirm that the secu
 ## Project Structure
 
 - `app.py`: Flask routes, vulnerable challenge logic, and secure comparisons
+- `static/`: shared stylesheet compatible with the secure page CSP
 - `templates/`: challenge and defence pages
 - `files/` and `secret/`: public and hidden files for the traversal challenge
 - `tests/`: automated exploit and defence checks
 - `docs/`: dated progress evidence and review summaries
+- `supporting-materials/`: screenshots, test results, anonymous user-testing evidence, and presentation materials
 - `WRITEUP_TEMPLATE.md`: repeatable structure for documenting each challenge
 - `SECURITY_NOTICE.md`: safe-use boundaries for the lab
 
