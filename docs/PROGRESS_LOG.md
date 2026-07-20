@@ -25,6 +25,9 @@ Evidence: changed source, templates, tests, README, and this dated log.
 - Added Windows PowerShell setup instructions.
 - Expanded the automated suite from 6 to 11 tests.
 - Ran Python compilation checks and confirmed that all 11 tests passed.
+- Captured current attack, defence, route-locking, and progress evidence.
+- Moved the shared stylesheet to a same-origin static file after visual testing showed that the secure XSS CSP correctly blocked the old inline style block.
+- Added `style-src 'self'` to the secure XSS CSP and extended the test suite to verify the policy and stylesheet link.
 
 Verification command:
 
@@ -39,10 +42,19 @@ Ran 11 tests
 OK
 ```
 
-## Remaining Milestones
+## 18 July 2026 - Final Packaging Milestone
 
-- Obtain feedback on this code-review version.
-- Re-test the revised workflow with a beginner participant.
-- Prepare and rehearse the five-minute presentation.
-- Reconcile the final report with the repository evidence.
-- Export and inspect the final report PDF and supporting files before submission.
+Evidence: `supporting-materials/`, the final report package, the presentation package, and the final automated checks.
+
+- Reconciled the report with the current code, 11-test result, user-testing evidence, and current screenshots.
+- Produced and visually inspected the final report DOCX and 20-page PDF.
+- Produced an eight-slide presentation with speaker notes, a fixed-layout PDF, and a timed five-minute script.
+- Added a current evidence catalogue, automated test record, anonymous user-testing summary, and presentation copies.
+- Prepared a clean source ZIP from the final local commit.
+
+## Manual Submission Steps
+
+- Confirm the student's exact name on the report and presentation covers.
+- Confirm the exact Moodle upload fields, filename rules, and deadline shown for the course.
+- Push the final local commits to the public repository after explicit approval.
+- Upload the report and any separately requested presentation or supporting files to Moodle.
