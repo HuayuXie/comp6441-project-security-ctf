@@ -47,6 +47,8 @@ class ChallengeTests(unittest.TestCase):
         self.assertNotIn(payload.encode(), secure.data)
         self.assertIn(b"&lt;script&gt;alert(1)&lt;/script&gt;", secure.data)
         self.assertIn("script-src 'self'", secure.headers["Content-Security-Policy"])
+        self.assertIn("style-src 'self'", secure.headers["Content-Security-Policy"])
+        self.assertIn(b"/static/styles.css", secure.data)
 
     def test_path_traversal_and_allowlist(self):
         payload = "../secret/flag.txt"
