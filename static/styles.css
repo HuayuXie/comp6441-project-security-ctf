@@ -1,0 +1,106 @@
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  margin: 0;
+  background: #f7f0df;
+  color: #1f1b16;
+}
+
+header {
+  background: #26362f;
+  color: white;
+  padding: 24px 36px;
+}
+
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+.card {
+  background: #fffaf0;
+  border: 2px solid #d8c49a;
+  border-radius: 14px;
+  padding: 22px;
+  margin: 18px 0;
+  box-shadow: 0 8px 20px rgba(53, 43, 25, 0.12);
+}
+
+a {
+  color: #8b3f14;
+  font-weight: 700;
+}
+
+input,
+button {
+  font: inherit;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #9c8b6d;
+}
+
+button {
+  background: #8b3f14;
+  color: white;
+  border: 0;
+  cursor: pointer;
+}
+
+code,
+pre {
+  background: #efe2c5;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+pre {
+  padding: 14px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.flag {
+  color: #b11226;
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+.hint {
+  color: #5f5140;
+}
+
+details.hint {
+  margin: 12px 0;
+}
+
+details.hint summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.status {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.complete {
+  background: #d9ead3;
+  color: #275d21;
+}
+
+.pending {
+  background: #eee3cc;
+  color: #6b552d;
+}
+
+.locked {
+  opacity: 0.72;
+}
+
+.nav {
+  margin-top: 14px;
+}
