@@ -2,7 +2,6 @@
 
 This COMP6441 project contains six small, beginner-friendly web security CTF challenges. Each challenge demonstrates one unsafe design, provides an intended flag path, and unlocks a secure comparison after completion. The teaching emphasis is not the flag itself: every task identifies a trust boundary, explains realistic security impact, and verifies a context-specific control.
 
-Two beginner participants tested the original four-challenge build. Their feedback led to progressive two-level hints, clearer Cookie editing and refresh instructions, completion status on the home page, and defence notes that remain locked until the matching challenge is solved. Challenges 5 and 6 were added later and are supported by automated tests, browser evidence and code review rather than participant sessions.
 
 ## Challenges
 
