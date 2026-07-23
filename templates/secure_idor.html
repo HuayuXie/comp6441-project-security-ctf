@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Secure Object-Level Authorisation</h2>
+  <p>The signed-in identity is <strong>{{ username }}</strong>. The query must match both the requested object ID and that owner.</p>
+  <form method="get">
+    <label>Document ID: <input name="document" value="{{ document_id }}" inputmode="numeric"></label>
+    <button type="submit">Open</button>
+  </form>
+  {% if document %}
+    <div class="record">
+      <p><strong>Title:</strong> {{ document[2] }}</p>
+      <p>{{ document[3] }}</p>
+    </div>
+  {% endif %}
+  {% if error %}<p class="flag">{{ error }}</p>{% endif %}
+  <pre>SELECT id, owner, title, content
+FROM documents
+WHERE id = ? AND owner = ?</pre>
+  <p class="hint">The same identifier no longer grants access because ownership is checked on the server for every object request.</p>
+</div>
+{% endblock %}

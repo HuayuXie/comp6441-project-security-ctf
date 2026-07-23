@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Challenge 5: IDOR Document Viewer</h2>
+  <p>You are signed in as <strong>student</strong>. Open your own note, then test whether changing its identifier exposes another user's document.</p>
+  <form method="get">
+    <label>Document ID: <input name="document" value="{{ document_id }}" inputmode="numeric"></label>
+    <button type="submit">Open</button>
+  </form>
+  {% if document %}
+    <div class="record">
+      <p><strong>ID:</strong> {{ document[0] }}</p>
+      <p><strong>Owner:</strong> {{ document[1] }}</p>
+      <p><strong>Title:</strong> {{ document[2] }}</p>
+      <p>{{ document[3] }}</p>
+    </div>
+  {% elif not error %}
+    <p class="hint">No document was found.</p>
+  {% endif %}
+  {% if error %}<p class="flag">{{ error }}</p>{% endif %}
+  {% if document and 'FLAG{' in document[3] %}
+    <p><a href="/">Return home to view your updated progress.</a></p>
+  {% else %}
+    <p class="hint"><strong>Hint 1:</strong> object identifiers are often sequential, but an identifier is not proof of ownership.</p>
+    <details class="hint">
+      <summary>Show Hint 2</summary>
+      <p>Your document is <code>1001</code>. Change the <code>document</code> parameter to the next identifier and check whether the server verifies the owner.</p>
+    </details>
+  {% endif %}
+</div>
+{% endblock %}

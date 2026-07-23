@@ -1,3 +1,4 @@
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -73,6 +74,52 @@ class ChallengeTests(unittest.TestCase):
         progress = self.client.get("/")
         self.assertGreaterEqual(progress.data.count(b"Completed"), 1)
 
+    def test_idor_and_object_owner_check(self):
+        own_document = self.client.get("/challenge/5", query_string={"document": "1001"})
+        self.assertIn(b"My first local CTF note.", own_document.data)
+        self.assertNotIn(b"FLAG{object_ids_are_not_authorisation}", own_document.data)
+
+        vulnerable = self.client.get("/challenge/5", query_string={"document": "1002"})
+        self.assertIn(b"FLAG{object_ids_are_not_authorisation}", vulnerable.data)
+
+        secure = self.client.get("/secure/challenge/5", query_string={"document": "1002"})
+        self.assertEqual(secure.status_code, 403)
+        self.assertIn(b"Blocked: this document does not belong to the signed-in user.", secure.data)
+        self.assertNotIn(b"FLAG{object_ids_are_not_authorisation}", secure.data)
+
+        allowed = self.client.get("/secure/challenge/5", query_string={"document": "1001"})
+        self.assertEqual(allowed.status_code, 200)
+        self.assertIn(b"My first local CTF note.", allowed.data)
+
+    def test_predictable_reset_and_random_one_time_token(self):
+        invalid = self.client.post(
+            "/challenge/6",
+            data={"username": "admin", "token": "wrong-token"},
+        )
+        self.assertNotIn(b"FLAG{predictable_reset_tokens_enable_takeover}", invalid.data)
+
+        vulnerable = self.client.post(
+            "/challenge/6",
+            data={"username": "admin", "token": "admin-2026"},
+        )
+        self.assertIn(b"FLAG{predictable_reset_tokens_enable_takeover}", vulnerable.data)
+
+        secure_page = self.client.get("/secure/challenge/6")
+        token_match = re.search(rb'<pre id="demo-token">([^<]+)</pre>', secure_page.data)
+        self.assertIsNotNone(token_match)
+        secure_token = token_match.group(1).decode()
+        self.assertGreaterEqual(len(secure_token), 40)
+        self.assertNotEqual(secure_token, "admin-2026")
+
+        predictable_rejected = self.client.post("/secure/challenge/6", data={"token": "admin-2026"})
+        self.assertIn(b"invalid, expired, or already used", predictable_rejected.data)
+
+        accepted = self.client.post("/secure/challenge/6", data={"token": secure_token})
+        self.assertIn(b"Secure token accepted once", accepted.data)
+
+        replay = self.client.post("/secure/challenge/6", data={"token": secure_token})
+        self.assertIn(b"invalid, expired, or already used", replay.data)
+
     def test_progressive_hints_and_progress_reset(self):
         challenge1 = self.client.get("/challenge/1")
         self.assertIn(b"Hint 1", challenge1.data)
@@ -88,13 +135,13 @@ class ChallengeTests(unittest.TestCase):
         self.assertIn(b"Challenge 1 defence locked", defence.data)
 
     def test_all_challenge_pages_have_two_hint_levels(self):
-        for challenge_id in range(1, 5):
+        for challenge_id in range(1, 7):
             page = self.client.get(f"/challenge/{challenge_id}")
             self.assertIn(b"Hint 1", page.data)
             self.assertIn(b"Show Hint 2", page.data)
 
     def test_secure_routes_are_locked_on_the_server(self):
-        for challenge_id in range(1, 5):
+        for challenge_id in range(1, 7):
             locked = self.client.get(f"/secure/challenge/{challenge_id}")
             self.assertEqual(locked.status_code, 403)
             self.assertIn(f"Challenge {challenge_id} Defence Locked".encode(), locked.data)
@@ -137,13 +184,15 @@ class ChallengeTests(unittest.TestCase):
         self.client.get("/challenge/2", query_string={"q": "<script>alert(1)</script>"})
         self.client.get("/challenge/3", query_string={"file": "../secret/flag.txt"})
         self.client.post("/challenge/4", data={"username": "student", "password": "' OR '1'='1"})
+        self.client.get("/challenge/5", query_string={"document": "1002"})
+        self.client.post("/challenge/6", data={"username": "admin", "token": "admin-2026"})
 
         home = self.client.get("/")
-        self.assertEqual(home.data.count(b">Completed<"), 4)
+        self.assertEqual(home.data.count(b">Completed<"), 6)
 
         defence = self.client.get("/defence")
         self.assertNotIn(b"defence locked", defence.data)
-        self.assertEqual(defence.data.count(b"Open secure comparison"), 4)
+        self.assertEqual(defence.data.count(b"Open secure comparison"), 6)
 
 
 if __name__ == "__main__":

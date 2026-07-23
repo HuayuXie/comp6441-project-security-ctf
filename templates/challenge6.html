@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Challenge 6: Predictable Password Reset Token</h2>
+  <p>The administrator requested a password reset. Find a token that the server will accept without knowing the password.</p>
+  <form method="post" autocomplete="off">
+    <p><label>Username: <input name="username" value="{{ username }}"></label></p>
+    <p><label>Reset token: <input name="token" value="{{ token }}"></label></p>
+    <button type="submit">Verify token</button>
+  </form>
+  {% if message %}<p class="flag">{{ message }}</p>{% endif %}
+  {% if message and 'FLAG{' in message %}
+    <p><a href="/">Return home to view your updated progress.</a></p>
+  {% else %}
+    <p class="hint"><strong>Hint 1:</strong> a reset secret should be unpredictable; inspect whether this demo builds it from public information.</p>
+    <details class="hint">
+      <summary>Show Hint 2</summary>
+      <p>The vulnerable pattern is <code>&lt;username&gt;-&lt;year&gt;</code>. The target account is <code>admin</code> and the lab year is <code>2026</code>.</p>
+    </details>
+  {% endif %}
+</div>
+{% endblock %}

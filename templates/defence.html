@@ -36,4 +36,20 @@
   <p><a href="/secure/challenge/4">Open secure comparison</a></p>
 </div>
 {% else %}<div class="card locked"><h3>Challenge 4 defence locked</h3><p>Complete Challenge 4 to unlock this comparison.</p></div>{% endif %}
+{% if 5 in completed %}
+<div class="card">
+  <h3>Challenge 5: IDOR / Missing Object-Level Authorisation</h3>
+  <p><strong>Vulnerable design:</strong> the server loads a document by identifier but never verifies that the signed-in user owns it.</p>
+  <p><strong>Secure design:</strong> apply an ownership or policy check on every object request; do not treat an identifier as an access credential.</p>
+  <p><a href="/secure/challenge/5?document=1002">Open secure comparison</a></p>
+</div>
+{% else %}<div class="card locked"><h3>Challenge 5 defence locked</h3><p>Complete Challenge 5 to unlock this comparison.</p></div>{% endif %}
+{% if 6 in completed %}
+<div class="card">
+  <h3>Challenge 6: Predictable Password Reset Token</h3>
+  <p><strong>Vulnerable design:</strong> the reset token is derived from a public username and year, so it can be guessed.</p>
+  <p><strong>Secure design:</strong> generate a high-entropy random token, store only its digest, expire it quickly, accept it once, and deliver it through a verified channel.</p>
+  <p><a href="/secure/challenge/6">Open secure comparison</a></p>
+</div>
+{% else %}<div class="card locked"><h3>Challenge 6 defence locked</h3><p>Complete Challenge 6 to unlock this comparison.</p></div>{% endif %}
 {% endblock %}

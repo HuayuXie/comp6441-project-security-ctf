@@ -27,3 +27,17 @@
 - Intended solution: use input such as username `admin' OR '1'='1' --`.
 - Impact: authentication bypass or database leakage.
 - Defence: parameterised queries / prepared statements.
+
+## Challenge 5: IDOR Document Viewer
+- Goal: access the administrator's document while signed in as the student.
+- Vulnerability: the server queries by document ID but omits an ownership or policy check.
+- Intended solution: change `document=1001` to `document=1002`.
+- Impact: authenticated users can read another user's sensitive records; authentication alone does not establish object authorisation.
+- Defence: include the authenticated owner or an equivalent policy decision in every object query and deny access by default.
+
+## Challenge 6: Predictable Password Reset Token
+- Goal: satisfy the administrator reset flow without knowing the password.
+- Vulnerability: the token follows the guessable pattern `<username>-<year>`.
+- Intended solution: submit `admin-2026`.
+- Impact: an attacker can bypass the normal login and take over an account through its recovery path.
+- Defence: generate a high-entropy random token, store only its digest, set a short expiry, accept it once, and deliver it through a verified channel.

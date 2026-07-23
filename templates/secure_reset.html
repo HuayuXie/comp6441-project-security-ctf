@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Secure Password Reset Token</h2>
+  <p>This local comparison generates a cryptographically random token, stores only its SHA-256 digest, expires it after {{ ttl_seconds // 60 }} minutes, and accepts it once.</p>
+  {% if demo_token %}
+    <p class="hint"><strong>Local demonstration only:</strong> a real service would deliver this value through a verified out-of-band channel rather than display it on the reset page.</p>
+    <p>Generated one-time token:</p>
+    <pre id="demo-token">{{ demo_token }}</pre>
+  {% endif %}
+  <form method="post" autocomplete="off">
+    <label>Token: <input name="token"></label>
+    <button type="submit">Verify token</button>
+  </form>
+  {% if message %}<p class="flag">{{ message }}</p>{% endif %}
+  <pre>token = secrets.token_urlsafe(32)
+token_hash = sha256(token)
+# Verify expiry and used == 0, then mark the token used.</pre>
+</div>
+{% endblock %}

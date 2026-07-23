@@ -2,7 +2,7 @@
 {% block content %}
 <div class="card">
   <h2>Project Overview</h2>
-  <p>This local CTF lab contains four beginner web security challenges. Each challenge is intentionally vulnerable and should only be run locally for learning.</p>
+  <p>This local CTF lab contains six beginner web security challenges. Each challenge is intentionally vulnerable and should only be run locally for learning.</p>
   <p>The project also includes defence comparison pages to show how the same ideas can be implemented more safely.</p>
 </div>
 <div class="card">
@@ -20,6 +20,14 @@
 <div class="card">
   <p class="status {{ 'complete' if 4 in completed else 'pending' }}">{{ 'Completed' if 4 in completed else 'Not completed' }}</p>
   <h3>Challenge 4: Simple SQL Injection</h3><p><a href="/challenge/4">Open challenge</a></p>
+</div>
+<div class="card">
+  <p class="status {{ 'complete' if 5 in completed else 'pending' }}">{{ 'Completed' if 5 in completed else 'Not completed' }}</p>
+  <h3>Challenge 5: IDOR Document Viewer</h3><p><a href="/challenge/5">Open challenge</a></p>
+</div>
+<div class="card">
+  <p class="status {{ 'complete' if 6 in completed else 'pending' }}">{{ 'Completed' if 6 in completed else 'Not completed' }}</p>
+  <h3>Challenge 6: Predictable Password Reset Token</h3><p><a href="/challenge/6">Open challenge</a></p>
 </div>
 <div class="card">
   <h3>Defence Comparison</h3>

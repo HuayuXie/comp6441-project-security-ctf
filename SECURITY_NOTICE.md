@@ -7,4 +7,4 @@ This repository is an intentionally vulnerable educational lab created for COMP6
 - Do not use the vulnerable examples as production code.
 - Use only the included test data and flags; the project is not designed to target any real system.
 
-The `/secure/challenge/*` routes are defensive comparisons. They are included to connect each exploit to a practical mitigation, not to claim that this small teaching application is production-ready.
+The `/secure/challenge/*` routes are defensive comparisons. They are included to connect each exploit to a practical mitigation, not to claim that this small teaching application is production-ready. Challenge 6 displays a generated reset token only so the local control can be tested; a real service must deliver such a token through a verified out-of-band channel and must never expose it on the reset page.
